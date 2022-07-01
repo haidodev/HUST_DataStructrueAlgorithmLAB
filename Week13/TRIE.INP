@@ -1,0 +1,18 @@
+MakeRoot 7
+Insert 3 7
+Insert 10 7
+Insert 4 7
+Insert 8 3
+Insert 12 3
+Insert 6 8
+Insert 5 8
+Insert 9 5
+Insert 11 4
+Insert 2 4
+PreOrder
+InOrder
+PostOrder
+CountNode
+CountLeaves
+TreeHeight
+*

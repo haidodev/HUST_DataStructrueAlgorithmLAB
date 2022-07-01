@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #define MAX_LEN 256
+#define FILE_NAME "TREE.INP"
 typedef struct t_node {
     int val;
     struct t_node *left, *right;
@@ -9,7 +10,6 @@ typedef struct t_node {
 
 void inorderTraversal(TreeNode *root){
     if (!root){
-        //printf("NULL ");
         return;
     }
     inorderTraversal(root -> left);
@@ -18,7 +18,6 @@ void inorderTraversal(TreeNode *root){
 }
 void preorderTraversal(TreeNode *root){
     if (!root){
-        //printf("NULL ");
         return;
     }
     printf("%d ", root -> val);
@@ -27,7 +26,6 @@ void preorderTraversal(TreeNode *root){
 }
 void postorderTraversal(TreeNode *root){
     if (!root){
-        //printf("NULL ");
         return;
     }
     postorderTraversal(root -> left);
@@ -60,6 +58,7 @@ void AddRight(TreeNode *root, int childNode, int parentNode){
     if (root -> right) return;
     root -> right = MakeRoot(childNode);
 }
+
 void doCommands(){
     TreeNode *root = NULL;
     char command[MAX_LEN];

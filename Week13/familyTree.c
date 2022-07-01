@@ -3,7 +3,6 @@
 #include<string.h>
 #include<stdbool.h>
 #define MAX_LEN 256
-#define MAX(a, b) (a) > (b) ? (a) : (b)
 #define FILE_NAME "FAMILY.INP"
 typedef struct t_node {
     char memberName[MAX_LEN];
@@ -27,6 +26,7 @@ LinkedList *createLinkedListNode(char *memberName){
     newLNode -> nodePtr = createTreeNode(memberName);
     newLNode -> isRoot = true;
     return newLNode;
+
 }
 LinkedList *findMember(char *memberName, LinkedList *head){
     while (head) {
@@ -88,18 +88,41 @@ int countDescendants(TreeNode *root){
     }
     return res;
 }
-int countGeneration(TreeNode *root){
-    if (!root) return 0;
-    int maxHeight = 0;
-    for (TreeNode *child = root -> leftMostChild; child; child = child -> adjacentNode){
-        maxHeight = MAX(countGeneration(child), maxHeight);
+int countGeneration(TreeNode *root, char *memberName, int curGen){
+    if (!root) return -1;
+    if (strcmp(root -> memberName, memberName) != 0){
+        TreeNode *tmpNode = root -> leftMostChild;
+        while (tmpNode) {
+            int cur = countGeneration(tmpNode, memberName, curGen + 1);
+            if (cur != -1) return cur;
+            tmpNode = tmpNode -> adjacentNode;
+        }
+        return -1;
     }
-    return 1 + maxHeight;
+    return curGen;
+}
+void printTreeNode(TreeNode *root){
+    if (!root) return;
+    printf("%s: ", root -> memberName);
+    TreeNode *tmpNode = root -> leftMostChild;
+    while (tmpNode) {
+        printf("%s ", tmpNode -> memberName);
+        tmpNode = tmpNode -> adjacentNode;
+    }
+    printf("\n");
+}
+void preOrderTraversal(TreeNode *root){
+    if (!root) return;
+    printTreeNode(root);
+    TreeNode *tmpNode = root -> leftMostChild;
+    while (tmpNode){
+        preOrderTraversal(tmpNode);
+        tmpNode = tmpNode -> adjacentNode;
+    } 
 }
 void doCommands(){
     LinkedList *head = NULL;
     FILE *fi = stdin;
-    //fi = fopen(FILE_NAME, "r");
     int cnt = 0;
     while (true)
     {
@@ -116,11 +139,12 @@ void doCommands(){
     {
         char memberName[MAX_LEN];
         fscanf(fi, "%s", memberName);
+        TreeNode *curNode = findNode(root, memberName);
         if (strcmp(command, "descendants") == 0){
-            printf("%d\n", countDescendants(findNode(root, memberName)));
+            printf("%d\n", countDescendants(curNode));
         }
         if (strcmp(command, "generation") == 0){
-            printf("%d\n", countGeneration(findNode(root, memberName)) - 1);
+            printf("%d\n", countGeneration(root, memberName, 1));
         }
         
     }
