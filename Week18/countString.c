@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define MAXLEN 1000000
 int main()
 {
     char currentChar, prevChar = 0;
@@ -10,9 +7,9 @@ int main()
     {
         if (currentChar != prevChar)
         {
-            if (currentChar == '0')
+            if (prevChar == '0')
                 ++countZero;
-            if (currentChar == '1')
+            if (prevChar == '1')
                 ++countOne;
             prevChar = currentChar;
         }
